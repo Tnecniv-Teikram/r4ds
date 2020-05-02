@@ -66,4 +66,74 @@ ggplot(data = mpg) +
 ggplot(data = mpg) + 
 geom_point(mapping = aes(x = displ, y =  hwy, color = displ < 5, shape = drv))
 
+# 3.5 Facets
 
+# create multiple plots for different classes of a single variable with facet  
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2) # facet wrap needs a discrete variable
+
+# facet a plot on combination of 2 variables. 
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ cyl) # facet grid should contain two variables
+
+# facet grid: scatter plot between engine displacement (displ), miles per gallon (hwy), sorted by number of cylinders 
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid( . ~ cyl) # use . if you don't want to facet rows or columns
+
+# 3.5.1 Exercises
+
+# 1) facet wrap using a continious variable splits plots by value
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~ cty)
+
+# 2)
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = drv, y = cyl))
+
+# 3) . does 
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(. ~ cyl)
+
+# 4) 
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(. ~ class, nrow = 2)
+
+# 3.6 Geometric objects
+
+# compare geoms. First plot a scatterplot
+ggplot( data = mpg) + 
+  geom_point(aes(x = displ, y = hwy))
+
+# then a smoothed geom scatterplot
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x  =  displ, y = hwy))
+
+# separate cars into three lines based on drv value. 
+ggplot( data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv  )) # set linetype for different wheel drive (f = front wheel, 4 = four wheel, r = rear wheel)
+
+# now overlay smoothed lines and points and separate by drive class (4wheel,rear,front)
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes( x = displ, y = hwy, color = drv ,linetype = drv)) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv))
+
+
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes( x = displ, y = hwy, group = drv))
+
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, color = drv),
+                            show.legend = FALSE)
