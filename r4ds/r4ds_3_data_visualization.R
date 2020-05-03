@@ -137,3 +137,56 @@ ggplot(data = mpg) +
 ggplot(data = mpg) +
   geom_smooth(mapping = aes(x = displ, y = hwy, color = drv),
                             show.legend = FALSE)
+
+# now display multiple geoms in the same plots
+ggplot(data = mpg) + 
+  geom_point(mapping = aes( x = displ, y = hwy)) + # add scatter plot
+  geom_smooth(mapping = aes(x = displ, y = hwy)) # add smooth line 
+
+# now recreate the same plot without code duplication
+ggplot(data = mpg, mapping = aes( x = displ, y = hwy)) + 
+  geom_point() +
+  geom_smooth()
+
+# mappings for a geom will change the layout only for that layout. Use global mappings for all geoms
+ggplot(data = mpg, mapping = aes( x = displ, y = hwy)) +
+  geom_point(mapping = aes(color = class)) +
+               geom_smooth()
+             
+# now specify different data for each geom layer. Smoothed geom shows a subset of auto class subcompact
+ggplot(data = mpg, mapping = aes( x = displ, y = hwy)) +
+  geom_point(mapping = aes( color = class)) +
+  geom_smooth(data = filter(mpg , class == "subcompact"),se = F) # se = confidence interval
+
+# 3.6.1 exercises 
+# line = geom_line
+# histogram = geom_hist
+# boxplot = geom_boxplot()
+# area chart = geom_area()
+
+# play with the show.legend option. This will add the legend for the specified geom.
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point(show.legend = T) + 
+  geom_smooth(se = T, show.legend = F)
+
+# 3.6.6
+
+ggplot( data = mpg, mapping = aes( x = displ, y = hwy)) + # plot scatterplot with smoothed line  
+  geom_point()+ 
+  geom_smooth(se = F) # remove confidence interval
+
+ggplot( data = mpg,aes( x = displ, y = hwy) ) + # plot scatterplot and smooth lines 
+  geom_point() +
+  geom_smooth(mapping = aes(group = drv)  , se = F) # add smooth line for each drv group
+
+ggplot(data = mpg, mapping = aes( x = displ, y = hwy, color = drv)) + # plot same but different color for each drv group
+  geom_point() + 
+  geom_smooth(se = F) # no conf. intrvl.
+
+#plot different point colors for each drv group 
+ggplot( data = mpg, mapping = aes( x = displ, y = hwy) ) + 
+  geom_point(mapping = aes( color = drv)) +
+  geom_smooth(se = F)
+
+
+
