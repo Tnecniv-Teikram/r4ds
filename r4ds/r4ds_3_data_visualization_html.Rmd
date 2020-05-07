@@ -8,6 +8,8 @@ This script follows the book R4ds by Hadley wickham. Source: https://r4ds.had.co
 ```{r}
 #install.packages("tidyverse")
 library(tidyverse)
+# install.packages("maps")
+library(maps)
 ```
 
 3.2 First steps
@@ -392,4 +394,76 @@ We can avoid overplotting in plots by setting position = "Jitter", which add a s
 ggplot( data = mpg) +
   geom_point( mapping = aes( x = displ, y = hwy), position = "Jitter") # or use geom_jitter()
 ```
+
+3.8.1 Exercises
+
+What is the problem with this plot? The plot does not show all data but a filtered  amount. This can be improved by using position = "Jitter" to include some noise.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + geom_point()
+
+# now plot all data but with a bit of noise using geom_jitter or "position = Jitter"
+ggplot( data = mpg, mapping = aes( x = cty, y = hwy)) + geom_point() + geom_jitter() 
+
+ggplot( data = mpg, mapping = aes( x = cty, y = hwy)) + geom_point() + geom_count() 
+
+```
+
+2 What parameters to geom_jitter() control the amount of jittering?
+
+?position_dodge, ?position_fill, ?position_identity, ?position_jitter, and ?position_stack.
+
+3 Compare and contrast geom_jitter() with geom_count().
+
+4) What’s the default position adjustment for geom_boxplot()? Create a visualisation of the mpg dataset that demonstrates it.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + geom_boxplot(aes(colour = class)) 
+```
+
+3.9 Coordinate systems
+
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + geom_boxplot()
+```
+
+We can flip the axes using "coord_flip()" switches the x and y axes. This is useful (for example), if you want horizontal boxplots. It’s also useful for long labels: it’s hard to get them to fit without overlapping on the x-axis.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + geom_boxplot() + coord_flip()
+```
+
+Change aspect ratio of maps using "coord_quickmap". 
+
+```{r}
+nz <- map_data("nz")
+
+ggplot(nz, aes(long, lat, group = group)) + 
+  geom_polygon(fill = "white", colour = "black")
+
+# now change the plot aspect ratio 
+
+ggplot(nz, aes( long, lat, group = group)) +
+  geom_polygon(fill = "white", colour = "black") + 
+  coord_quickmap()
+
+
+```
+
+
+```{r}
+bar <- ggplot(data = diamonds) + 
+  geom_bar(
+    mapping = aes(x = cut, fill = cut), 
+    show.legend = FALSE,
+    width = 1
+  ) + 
+  theme(aspect.ratio = 1) +
+  labs(x = NULL, y = NULL)
+
+bar + coord_flip()
+bar + coord_polar()
+```
+
 
