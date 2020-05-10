@@ -152,4 +152,14 @@ filter(flights, is.na(dep_time))
 
 4 Why is NA ^ 0 not missing 
 
+5.3 Arrange rows with arrange()
+
+```{r}
+arrange(flights, year, month, day)
+```
+
+Use desc() to reorder a column in descending order
+```{r}
+arrange(flights, desc(dep_delay))
+```
 
